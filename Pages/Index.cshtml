@@ -1,0 +1,68 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">SL info</h1>
+
+    <form method="get">
+        <input type="text" id="location" name="location" />
+        <input type="number" id="minToStations" name="minToStations" />
+        <input type="submit" value="Sök">
+    </form>
+
+
+    @foreach (var hpl in Model.hpl.ResponseData)
+    {
+        <a href="?siteid=@hpl.SiteId">@hpl.Name</a><br>
+    }
+
+
+
+    <table class="text-center">
+        @if (Model.departure.ResponseData != null)
+        {
+            foreach (var bus in Model.departure.ResponseData.Buses.Where(x => x.ExpectedDateTime > DateTime.Now.AddMinutes(Model.minToStations)))
+            {
+                <tr>
+                    <td class="text-left">
+                        @bus.LineNumber
+                    </td>
+                    <td class="text-left">
+                        @bus.DisplayTime
+                    </td>
+                    <td class="text-left">
+                        @bus.Destination
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <hr />
+
+    <table class="text-center">
+        @if (Model.departure.ResponseData != null)
+        {
+            foreach (var bus in Model.departure.ResponseData.Metros.Where(x => x.ExpectedDateTime > DateTime.Now.AddMinutes(Model.minToStations)))
+            {
+                <tr>
+                    <td class="text-left">
+                        @bus.LineNumber
+                    </td>
+                    <td class="text-left">
+                        @bus.DisplayTime
+                    </td>
+                    <td class="text-left">
+                        @bus.Destination
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+
+
+</div>
