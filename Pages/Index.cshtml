@@ -14,6 +14,7 @@
     </form>
 
 
+
     @foreach (var hpl in Model.hpl.ResponseData)
     {
         <a href="?siteid=@hpl.SiteId">@hpl.Name</a><br>
@@ -63,6 +64,20 @@
         }
     </table>
 
+    <h3><i>Chuck Norris jokes :)</i></h3>
+    <span class="border-primary">
+        @foreach (var chuck in Model.chuckie.value)
+        {
+            @chuck
+        }
 
+    </span>
 
+    <hr />
+
+    <h3><i>Stockholms väder</i></h3>
+        <p><span>@Model.weatherStockholm.main.temp°C</span> Nuvarande temperatur</p>
+        <p><span>@Model.weatherStockholm.main.temp_max°C</span> Max temperatur</p>
+        <p><span>@Model.weatherStockholm.main.temp_min°C</span> Min temperatur</p>
+        <p><span>@Model.weatherStockholm.main.humidity%</span> Luftfuktighet</p>
 </div>

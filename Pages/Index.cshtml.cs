@@ -31,6 +31,14 @@ namespace SL2.Pages
         [BindProperty(SupportsGet = true)]
         public int minToStations { get; set; }
 
+        ///-------------------------------------------------------
+
+        public ChuckNorris chuckie { get; set; }
+
+        [BindProperty (SupportsGet = true)]
+        public WeatherApi weatherStockholm { get; set; }
+
+
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -72,7 +80,29 @@ namespace SL2.Pages
 
             hpl = await GetStopsAsync();
             departure = await GetDeparturesAsync();
+
+            weatherStockholm = await GetWeatherDataAsync();
+
+            chuckie = await GetChuckAsync();
             return Page();
+        }
+
+        public async Task<ChuckNorris> GetChuckAsync()
+        {
+            string link = $"https://api.chucknorris.io/jokes/random";
+            Task<string> mellanhandchuckString = client.GetStringAsync(link);
+            string chuckString = await mellanhandchuckString;
+            chuckie = JsonSerializer.Deserialize<ChuckNorris>(chuckString);
+            return chuckie;
+        }
+
+        public async Task<WeatherApi> GetWeatherDataAsync()
+        {
+            string link = $"https://api.openweathermap.org/data/2.5/weather?q=stockholm&appid=891eafc578fbdbf0762bcad68c8bd4da&units=metric&lang=sv";
+            Task<string> weatherforecast = client.GetStringAsync(link);
+            string weatherString = await weatherforecast;
+            weatherStockholm = JsonSerializer.Deserialize<WeatherApi>(weatherString);
+            return weatherStockholm;
         }
 
         public async Task<Stops> GetStopsAsync()
